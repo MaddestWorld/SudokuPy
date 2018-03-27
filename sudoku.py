@@ -1,59 +1,31 @@
-from random import randint
+from random import randint,shuffle
 
 class Sudoku():
     ''''''
     def __init__(self):
         self.sudoku=[[0]*9]*9
         self.nedSodoku=list()
+        self.upoSud=list()
+        self.stResSud=0
 
     def generiraj(self):
         '''Generira Sudoku pri tem pazi na pravilnost sudokuja %%nedokoncano%%'''
-        self.sudoku = [[0] * 9] * 9
-        seznamStolpcev=[[0] * 9] * 9
-        seznamTrojk=[[0]*9]*9
+        mnozicaSt={1,2,3,4,5,6,7,8,9}
+        self.sudoku = [[0] * 9 for i in range(9)]
+        seznamStolpcev=[[0] * 9 for i in range(9)]
+        seznamTrojk=[[0] * 9 for i in range(9)]
         stPonovitev=0
         for vrstica in range(9):
             for stolpec in range(9):
-                while "":
-                    stevilo=randint(1,9)
-                    if (stevilo not in self.sudoku[vrstica]) and (stevilo not in seznamStolpcev[vrstica]):
-                        if stolpec<=2 and vrstica<=2:
-                            if stevilo not in seznamTrojk[0]:
-                                self.sudoku[vrstica][stolpec]=stevilo
-                        elif stolpec<=5 and vrstica<=2:
-                            if stevilo not in seznamTrojk[1]:
-                                self.sudoku[vrstica][stolpec]=stevilo
-                        elif stolpec<=8 and vrstica<=2:
-                            if stevilo not in seznamTrojk[2]:
-                                self.sudoku[vrstica][stolpec]=stevilo
-                        elif stolpec<=2 and vrstica<=5:
-                            if stevilo not in seznamTrojk[3]:
-                                self.sudoku[vrstica][stolpec]=stevilo
-                        elif stolpec<=5 and vrstica<=5:
-                            if stevilo not in seznamTrojk[4]:
-                                self.sudoku[vrstica][stolpec]=stevilo
-                        elif stolpec<=8 and vrstica<=5:
-                            if stevilo not in seznamTrojk[5]:
-                                self.sudoku[vrstica][stolpec]=stevilo
-                        elif stolpec<=2 and vrstica<=8:
-                            if stevilo not in seznamTrojk[6]:
-                                self.sudoku[vrstica][stolpec]=stevilo
-                        elif stolpec<=5 and vrstica<=8:
-                            if stevilo not in seznamTrojk[7]:
-                                self.sudoku[vrstica][stolpec]=stevilo
-                        elif stolpec<=8 and vrstica<=8:
-                            if stevilo not in seznamTrojk[8]:
-                                self.sudoku[vrstica][stolpec]=stevilo
-
-                    #posodobitev tabele stolpcev
-                    if "":
-                    seznamStolpcev[stolpec][vrstica]=self.sudoku[vrstica][stolpec]
-                    if "":
-                    #posodobitev tablele
-                    seznamTrojk[stolpec%3]=self.sudoku[vrstica][stolpec]
-
-
-
+                sezGeneriranja=list(mnozicaSt.difference(set(self.sudoku[vrstica]).union(set(seznamStolpcev[stolpec]).union(seznamTrojk[]))))
+                shuffle(sezGeneriranja)
+                print(sezGeneriranja)
+                stevilo=list(sezGeneriranja)[0]
+                self.sudoku[vrstica][stolpec]=stevilo
+                #seznamStolpcev[stolpec][vrstica]=stevilo
+        print("V: " + str(self.sudoku))
+        print("S: "+ str(seznamStolpcev))
+        print("T: "+str(seznamTrojk))
 
 
 
@@ -70,7 +42,13 @@ class Sudoku():
             if self.nedSodoku[vrstica][stolpec]!=".":
                 self.nedSodoku[vrstica]=self.nedSodoku[vrstica][:stolpec]+"."+self.nedSodoku[vrstica][stolpec+1:]
                 stElementovZaPobrisati-=1
+    def posodobiSudoku(self):
+        ''''''
+    def preveriEnakost(self):
+        ''''''
+    def zapisiVDat(self):
+        ''''''
 
 novo1=Sudoku()
 novo1.generiraj()
-print(novo1.sudoku)
+#print(novo1.sudoku)
