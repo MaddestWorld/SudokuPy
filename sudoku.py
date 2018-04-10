@@ -7,10 +7,12 @@ class Sudoku():
         sudoku:           po generiranju narejen sudoku(v celoti)
         nedsudoku:        nedokoncan sudoku oziroma sudoku z zbrsanimi element
         trenutniSudoku:   uporabikov sudoku v x koraku
+        tezavnost:        stevilo stevil, ki bo pobrisanih kot (81-tezavnost)--> manjse stevilo vec stevil bo pobrisanih
         '''
-        self.sudoku=list()
-        self.nedSodoku=list()
-        self.trenutniSudoku=list()
+        self.sudoku=[[0] * 9 for i in range(9)]
+        self.nedSodoku=[[0] * 9 for i in range(9)]
+        self.trenutniSudoku=[[0] * 9 for i in range(9)]
+        self.tezanost=80
 
     def generirajEnkrat(self,maxponovitev,izpis=False):
         '''Generira Sudoku enkrat pri tem pazi na pravilnost sudokuja: "Dela(zazeleni popravki)" '''
@@ -60,26 +62,26 @@ class Sudoku():
                     seznamTrojk[3*(vrstica//3)+stolpec//3][3*(vrstica%3)+stolpec%3]=stevilo
                 stolpec=stolpec+1
         if izpis==True:
-            '''testiranje kasneje pobrisi'''
+            #testiranje kasneje pobrisi
             print("V: " + str(self.sudoku))
             print("S: " + str(seznamStolpcev))
             print("T: " + str(seznamTrojk))
         return True
 
     def generiraj(self,maxponovitev,izpis=False):
-        "generira sudoku dokler ni vredu"
+        '''generira sudoku dokler ni vredu'''
         x = self.generirajEnkrat(maxponovitev,izpis)
         while not x:
             x = self.generirajEnkrat(maxponovitev,izpis)
 
-    def pobrisiElemente(self,tezavnost):
+    def pobrisiElemente(self):
         '''Pripravi sodoku za resevanje, to naradi tako da uposteva tezavnost ter na tezavnost izbrise st podatkov. '''
         self.nedSodoku = [[0] * 9 for i in range(9)]
         for vrsta in range(9):
             for stolpec in range(9):
                 self.nedSodoku[vrsta][stolpec]=self.sudoku[vrsta][stolpec]
 
-        stElementovZaPobrisati=81-tezavnost
+        stElementovZaPobrisati=81-self.tezavnost
         while stElementovZaPobrisati>0:
             vrstica=randint(0,8)
             stolpec=randint(0,8)
@@ -100,11 +102,18 @@ class Sudoku():
 
     def preveriEnakost(self):
         '''preveri in vrne ce je sudoku resen pravilno'''
-        for vrsta in self.sudoku:
-            for stolpec in vrsta:
+        for vrsta in range(9):
+            for stolpec in range(9):
                 if self.trenutniSudoku[vrsta][stolpec]!=self.sudoku[vrsta][stolpec]:
-                    return false
-        return true
+                    return False
+        return True
+
+    def nastaviTezavnost(self,tezavonost):
+        '''nastavi tezavnost sudokuja'''
+        self.tezavnost=tezavonost
+        self.pobrisiElemente()
+        self.nastavi()
+
 
 if __name__=="__main__":
     novo1=Sudoku()
@@ -119,6 +128,6 @@ if __name__=="__main__":
                   [1,5,4,9,3,8,6,7,2]]
 
     novo1.generiraj(10,False)
-    novo1.pobrisiElemente(30)
+    novo1.pobrisiElemente()
     print(novo1.nedSodoku)
     print(novo1.sudoku)
