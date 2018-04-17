@@ -3,6 +3,7 @@ from sudoku import *
 from tkinter import messagebox
 trenutna_tezavnost=40
 
+
 def preveriEnakost():
     '''preveri pravilnost sudokuja'''
     if sudoku.preveriEnakost():
@@ -11,8 +12,20 @@ def preveriEnakost():
     else:
         messagebox.showinfo("Obvestilo", "Rešitev sudokuja ni pravilna. Prosim poskusite ponovno. ")
 
+def pritisnjenaTipka(event):
+    '''nastavi zadnji pritisnjen gumb na vrednost pritisnjene tipke, če to le ustreza pravilom sudokuja'''
+    tabBarv = tabela_barv(sudoku)
+    if (event.char in '0123456789') and tabBarv[vrsticaZadGumba][stolpecZadGumba]=="red":
+        sudoku.trenutniSudoku[vrsticaZadGumba][stolpecZadGumba]=int(event.char)
+        matrika[vrsticaZadGumba][stolpecZadGumba].configure(text=int(event.char))
+        createGrid(tabBarv)
+
 def btnCommand(row, col, x,tabBarv,matrika):
     '''pritisk na gumb'''
+    global vrsticaZadGumba
+    global stolpecZadGumba
+    vrsticaZadGumba = row
+    stolpecZadGumba = col
     if tabBarv[row][col]=="red":
         if x==" ":
             x=0
@@ -23,6 +36,7 @@ def btnCommand(row, col, x,tabBarv,matrika):
         sudoku.trenutniSudoku[row][col] = x
         matrika[row][col].configure(text=x)
         createGrid(tabBarv)
+
 
 def tabela_barv(sudoku):
     '''ustvari tabelo barv za mrezo gumbov'''
@@ -43,6 +57,7 @@ def nastavitevTezavnosti(tezavnost):
 
 def createGrid(tabBarv):
     '''ustvari mrezo gumbov se poprej pa pobrise stare gumbe'''
+    global matrika
     i=0
     #brisanje prej ustvarjenih gumbov
     for gumb in frame.winfo_children():
@@ -88,6 +103,7 @@ frame.config(menu=menu)
 menu.add_cascade(label="Ostalo", menu=file)
 file.add_command(label="Oddaj", command=preveriEnakost)
 nastavitevTezavnosti(trenutna_tezavnost)
+frame.bind("<Key>",pritisnjenaTipka)
 frame.mainloop()
 
 
