@@ -15,7 +15,7 @@ class Sudoku():
         self.tezanost=80
 
     def generirajEnkrat(self,maxponovitev,izpis=False):
-        '''Generira Sudoku enkrat pri tem pazi na pravilnost sudokuja: "Dela(zazeleni popravki)" '''
+        '''Generira Sudoku enkrat pri tem pazi na pravilnost sudokuja '''
         mnozicaSt={1,2,3,4,5,6,7,8,9}
         napaka=False
         stPonovitev=0
@@ -61,11 +61,6 @@ class Sudoku():
                     seznamStolpcev[stolpec][vrstica]=stevilo
                     seznamTrojk[3*(vrstica//3)+stolpec//3][3*(vrstica%3)+stolpec%3]=stevilo
                 stolpec=stolpec+1
-        if izpis==True:
-            #testiranje kasneje pobrisi
-            print("V: " + str(self.sudoku))
-            print("S: " + str(seznamStolpcev))
-            print("T: " + str(seznamTrojk))
         return True
 
     def generiraj(self,maxponovitev,izpis=False):
@@ -90,7 +85,7 @@ class Sudoku():
                 stElementovZaPobrisati-=1
 
     def nastavi(self):
-        '''nastavi sudoku tako da ga uporabik lahko spreminja'''
+        '''Nastavi sudoku tako, da ga uporabik lahko spreminja'''
         self.trenutniSudoku = [[0] * 9 for i in range(9)]
         for vrsta in range(9):
             for stolpec in range(9):
@@ -113,21 +108,3 @@ class Sudoku():
         self.tezavnost=tezavonost
         self.pobrisiElemente()
         self.nastavi()
-
-
-if __name__=="__main__":
-    novo1=Sudoku()
-    novo1.sudoku=[[2,9,5,7,4,3,8,6,1],
-                  [4,3,1,8,6,5,9,2,7],
-                  [8,7,6,1,9,2,5,4,3],
-                  [3,8,7,4,5,9,2,1,6],
-                  [6,1,2,3,8,7,4,9,5],
-                  [5,4,9,2,1,6,7,3,8],
-                  [7,6,3,5,3,4,1,8,9],
-                  [9,2,8,6,7,1,3,5,4],
-                  [1,5,4,9,3,8,6,7,2]]
-
-    novo1.generiraj(10,False)
-    novo1.pobrisiElemente()
-    print(novo1.nedSodoku)
-    print(novo1.sudoku)

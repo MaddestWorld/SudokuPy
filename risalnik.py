@@ -1,13 +1,15 @@
 from tkinter import *
 from sudoku import *
-
+from tkinter import messagebox
+trenutna_tezavnost=40
 
 def preveriEnakost():
-    '''preveri pravilnost sudokuja: potrebno narediti pop-out window s podobnim izpisom'''
+    '''preveri pravilnost sudokuja'''
     if sudoku.preveriEnakost():
-        print("Cestitamo resili ste sudoku pravilno")
+        messagebox.showinfo("Obvestilo","Čestitamo rešili ste sudoku pravilno")
+        nastavitevTezavnosti(trenutna_tezavnost)
     else:
-        print ("poskusite se enkrat")
+        messagebox.showinfo("Obvestilo", "Rešitev sudokuja ni pravilna. Prosim poskusite ponovno. ")
 
 def btnCommand(row, col, x,tabBarv,matrika):
     '''pritisk na gumb'''
@@ -33,6 +35,7 @@ def tabela_barv(sudoku):
 
 def nastavitevTezavnosti(tezavnost):
     '''nastavi tezavnost sudokuja in ga resetira'''
+    trenutna_tezavnost=tezavnost
     sudoku.nastaviTezavnost(tezavnost)
     tabBarv = tabela_barv(sudoku)
     createGrid(tabBarv)
@@ -70,19 +73,21 @@ def createGrid(tabBarv):
 
 
 frame = Tk()
+frame.title("Sudoku")
 menu = Menu(frame)
 file = Menu(menu)
+file2=Menu(menu)
 sudoku=Sudoku()
 sudoku.generiraj(20,False)
-#narediti je potrebno delujoce izbire trenutno to ne dela
-file.add_command(label="Exit", command=frame.quit)
-file.add_command(label="Tezka tezavnostnja stopnja", command=nastavitevTezavnosti(20))
-file.add_command(label="Srednja tezavnostnja stopnja", command=nastavitevTezavnosti(30))
-file.add_command(label="Lahka tezavnostnja stopnja", command=nastavitevTezavnosti(40))
-menu.add_cascade(label="Izberi tezavnost", menu=file)
+file.add_command(label="Izhod", command=frame.quit)
+file2.add_command(label="Težka težavnostnja stopnja", command=lambda :nastavitevTezavnosti(30))
+file2.add_command(label="Srednja težavnostnja stopnja", command=lambda :nastavitevTezavnosti(40))
+file2.add_command(label="Lahka težavnostnja stopnja", command=lambda :nastavitevTezavnosti(50))
+menu.add_cascade(label="Izberi težavnost", menu=file2)
 frame.config(menu=menu)
 menu.add_cascade(label="Ostalo", menu=file)
-file.add_command(label="Oddaj", command=preveriEnakost())
+file.add_command(label="Oddaj", command=preveriEnakost)
+nastavitevTezavnosti(trenutna_tezavnost)
 frame.mainloop()
 
 
